@@ -68,4 +68,23 @@ if [ "$opcion" = "s" ]; then
 	fi
 fi
 
-echo "proceso finalizado"
+# SUDO
+read -p " ¿Deseas dar permisos sudo (s/n) : " sudo_opp
+if [ "$sudo_opp" = "s" ]; then 
+
+	echo "1) Todos los comandos"
+	echo "2) Solo un comando"
+	read -p "Elige la opcion: " tipo
+
+	if [ "$tipo" = "1" ]; then 
+		sudo  usermod -aG sudo "$usuario"
+		echo "usuario agregado a sudo"
+	elif [ "$tipo" = "2" ]; then 
+		read -p "Escribe el comando  " comando
+
+		echo "$usuario ALL=(ALL) NOPASSWD: $comando" | sudo tee -a /etc/sudoers
+
+		echo "permiso asignado para comando especifico"
+	fi
+fi
+echo "terminamos"
